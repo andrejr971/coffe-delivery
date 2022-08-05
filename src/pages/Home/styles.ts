@@ -96,4 +96,27 @@ export const Information = styled.li`
   gap: 1.2rem;
 `
 
-export const Container = styled.main``
+export const Container = styled.main`
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+
+  margin-top: 14rem;
+  padding: 1.6rem;
+`
+
+export const Title2 = styled.h2`
+  ${({ theme }) => css`
+    font: ${theme.fonts.title_l};
+    color: ${theme.colors.base_subtitle};
+
+    margin-bottom: 5.6rem;
+  `}
+`
+
+export const Grid = styled.section`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+  gap: 4rem 3.2rem;
+`

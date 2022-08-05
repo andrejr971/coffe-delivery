@@ -7,15 +7,19 @@ import {
   Background,
   Container,
   ContentHero,
+  Grid,
   Hero,
   Information,
   Informations,
   Subtitle,
   Title,
+  Title2,
 } from './styles'
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import theme from '../../styles/theme'
 import { BadgeIcon } from '../../components/BadgeIcon'
+import { productsService } from '../../services/products'
+import { Card } from '../../components/Card'
 
 export function Home() {
   return (
@@ -86,10 +90,13 @@ export function Home() {
       </Hero>
 
       <Container>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae,
-        fugit eaque, facilis quos dolores iure error animi voluptas modi
-        molestiae asperiores omnis qui ducimus, aut odit eligendi reprehenderit
-        dolor debitis?
+        <Title2>Nossos cafés</Title2>
+
+        <Grid>
+          {productsService.map((product) => (
+            <Card key={product.id} {...product} />
+          ))}
+        </Grid>
       </Container>
     </>
   )

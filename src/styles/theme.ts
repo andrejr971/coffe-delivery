@@ -30,7 +30,7 @@ export default {
     text_bold_m: "bold 1.6rem/130% 'Roboto', sans-serif",
     text_regular_s: "1.4rem/130% 'Roboto', sans-serif",
     text_bold_s: "bold 1.2rem/130% 'Roboto', sans-serif",
-    tag: "1.0rem/130% 'Roboto', sans-serif",
+    tag: "bold 1.0rem/130% 'Roboto', sans-serif",
     button_l: "bold 1.4rem/160% 'Roboto', sans-serif",
     button_s: "bold 1.2rem/160% 'Roboto', sans-serif",
     sizes: {
