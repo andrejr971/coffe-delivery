@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
 import { darken, lighten } from 'polished'
+import { NavLink } from 'react-router-dom'
 
 export const Container = styled.header`
   width: 100%;
@@ -55,7 +56,7 @@ export const ButtonLocation = styled.button`
   `}
 `
 
-export const ButtonCart = styled.a`
+export const ButtonCart = styled(NavLink)`
   ${({ theme }) => css`
     background: ${theme.colors.yellow_light};
     border: 0;
@@ -73,7 +74,7 @@ export const ButtonCart = styled.a`
     transition: all 0.2s ease;
 
     &:hover {
-      background: ${darken(0.1, theme.colors.yellow_dark)};
+      background: ${darken(0.1, theme.colors.yellow_light)};
     }
   `}
 `

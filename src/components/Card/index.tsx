@@ -1,6 +1,7 @@
 import { Minus, Plus, ShoppingCart } from 'phosphor-react'
 import { useState } from 'react'
 import theme from '../../styles/theme'
+import { Button } from '../Button'
 import {
   AmountToCart,
   Cart,
@@ -80,9 +81,9 @@ export function Card({
             </button>
           </AmountToCart>
 
-          <button>
-            <ShoppingCart />
-          </button>
+          <Button size="small">
+            <ShoppingCart size={24} weight="fill" />
+          </Button>
         </Cart>
       </Footer>
     </Container>

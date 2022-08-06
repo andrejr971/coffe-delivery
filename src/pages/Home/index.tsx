@@ -1,5 +1,3 @@
-import { Header } from '../../components/Header'
-
 import BackgroundImage from '../../assets/Background.svg'
 import CoffeeImage from '../../assets/Hero.png'
 
@@ -24,8 +22,6 @@ import { Card } from '../../components/Card'
 export function Home() {
   return (
     <>
-      <Header />
-
       <Hero>
         <Background>
           <img src={BackgroundImage} alt="background" />

@@ -1,4 +1,5 @@
 import { MapPin, ShoppingCart } from 'phosphor-react'
+import { NavLink } from 'react-router-dom'
 import LogoImg from '../../assets/Logo.svg'
 import theme from '../../styles/theme'
 
@@ -16,7 +17,9 @@ export function Header() {
   return (
     <Container>
       <Content>
-        <img src={LogoImg} alt="Logo Coffee Delivery" />
+        <NavLink to="/">
+          <img src={LogoImg} alt="Logo Coffee Delivery" />
+        </NavLink>
 
         <GroupButtons>
           <ButtonLocation>
@@ -25,7 +28,7 @@ export function Header() {
           </ButtonLocation>
 
           <Cart>
-            <ButtonCart href="/">
+            <ButtonCart to="/checkout">
               <ShoppingCart
                 color={theme.colors.yellow_dark}
                 weight="fill"
