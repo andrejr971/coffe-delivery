@@ -1,4 +1,4 @@
-import { darken } from 'polished'
+import { darken, lighten } from 'polished'
 import styled, { css } from 'styled-components'
 
 export const Container = styled.div`
@@ -127,4 +127,40 @@ export const AmountToCart = styled.div`
       }
     }
   `}
+`
+
+export const Badge = styled.span`
+  ${({ theme }) => css`
+    background: ${theme.colors.purple};
+    border: 0;
+    border-radius: 10px;
+
+    width: 2rem;
+    height: 2rem;
+
+    color: ${theme.colors.white};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+
+    padding: 8px;
+
+    font: ${theme.fonts.text_bold_s};
+    line-height: 0;
+
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: ${lighten(0.1, theme.colors.purple)};
+    }
+
+    position: absolute;
+    top: -8px;
+    right: -8px;
+  `}
+`
+
+export const DivAddCart = styled.div`
+  position: relative;
 `

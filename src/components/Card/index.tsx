@@ -1,13 +1,16 @@
 import { Minus, Plus, ShoppingCart } from 'phosphor-react'
 import { useState } from 'react'
+import { useCart } from '../../hooks/useCart'
 import theme from '../../styles/theme'
 import { Button } from '../Button'
 import {
   AmountToCart,
+  Badge,
   Cart,
   Categories,
   Container,
   Description,
+  DivAddCart,
   Footer,
   ImageCoffee,
   Price,
@@ -28,22 +31,36 @@ interface CardProps {
 }
 
 export function Card({
+  id,
   name,
   categories,
   description,
   price,
   thumbnailUrl,
 }: CardProps) {
-  const [amount, setAmount] = useState(1)
+  const { addToCart, cart } = useCart()
+
+  const amountInCart = cart && cart.find((item) => item.id === id)
+
+  const [amount, setAmount] = useState(
+    (amountInCart && amountInCart.amount) || 1,
+  )
 
   function handleUpdateAmount(type: 'add' | 'remove') {
     if (type === 'remove') {
-      if (amount <= 1) return
+      if (amount <= 0) return
 
       setAmount(amount - 1)
     } else {
       setAmount(amount + 1)
     }
+  }
+
+  function handleAddToCart() {
+    addToCart({
+      id,
+      amount,
+    })
   }
 
   return (
@@ -81,9 +98,15 @@ export function Card({
             </button>
           </AmountToCart>
 
-          <Button size="small">
-            <ShoppingCart size={24} weight="fill" />
-          </Button>
+          <DivAddCart>
+            <Button size="small" onClick={handleAddToCart}>
+              <ShoppingCart size={24} weight="fill" />
+            </Button>
+
+            {amountInCart && amountInCart.amount > 0 && (
+              <Badge>{amountInCart.amount}</Badge>
+            )}
+          </DivAddCart>
         </Cart>
       </Footer>
     </Container>

@@ -3,7 +3,7 @@ import { Container } from './styles'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'light'
   size?: 'full' | 'small'
 }
 

@@ -1,6 +1,7 @@
 import { MapPin, ShoppingCart } from 'phosphor-react'
 import { NavLink } from 'react-router-dom'
 import LogoImg from '../../assets/Logo.svg'
+import { useCart } from '../../hooks/useCart'
 import theme from '../../styles/theme'
 
 import {
@@ -14,6 +15,8 @@ import {
 } from './styles'
 
 export function Header() {
+  const { cart } = useCart()
+
   return (
     <Container>
       <Content>
@@ -36,7 +39,7 @@ export function Header() {
               />
             </ButtonCart>
 
-            <Badge>3</Badge>
+            {cart && cart.length > 0 && <Badge>{cart.length}</Badge>}
           </Cart>
         </GroupButtons>
       </Content>

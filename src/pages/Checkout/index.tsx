@@ -5,21 +5,33 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
+import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
+import { ItemCart } from '../../components/ItemCart'
+import { useCart } from '../../hooks/useCart'
+import { productsService } from '../../services/products'
 import theme from '../../styles/theme'
+
 import {
   AddressAside,
   CartAside,
+  CartList,
   Container,
+  Content,
+  Details,
   Form,
   Group,
   GroupInputs,
+  ItemDetail,
   Payment,
   PaymentGroup,
   SelectPayment,
+  Total,
 } from './styles'
 
 export function Checkout() {
+  const { productsCart } = useCart()
+
   return (
     <Container>
       <AddressAside>
@@ -87,12 +99,35 @@ export function Checkout() {
         <div>
           <h2>Cafés selecionados</h2>
 
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-            unde minus aliquid, neque nesciunt excepturi quasi, mollitia vero
-            eaque totam, dignissimos corporis ipsa qui ratione? Voluptas odit
-            officia aut quibusdam?
-          </p>
+          <Content>
+            <CartList>
+              {productsCart &&
+                productsCart.map((item) => (
+                  <ItemCart key={item.id} {...item} />
+                ))}
+            </CartList>
+
+            <Details>
+              <ul>
+                <ItemDetail>
+                  <span>Total de itens</span>
+                  <strong>R$ 29,70</strong>
+                </ItemDetail>
+                <ItemDetail>
+                  <span>Entrega</span>
+                  <strong>R$ 3,50</strong>
+                </ItemDetail>
+                <Total>
+                  <span>Total</span>
+                  <strong>R$ 33,20</strong>
+                </Total>
+              </ul>
+            </Details>
+
+            <Button size="full" variant="secondary">
+              Confirmar pedido
+            </Button>
+          </Content>
         </div>
       </CartAside>
     </Container>
