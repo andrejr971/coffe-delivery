@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 import { AppProvider } from './contexts'
-import { Home } from './pages/Home'
+
 import { Router } from './Router'
 import { GlobalStyles } from './styles/global'
 

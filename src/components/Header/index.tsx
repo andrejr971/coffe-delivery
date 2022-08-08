@@ -15,7 +15,7 @@ import {
 } from './styles'
 
 export function Header() {
-  const { cart } = useCart()
+  const { totalProducts } = useCart()
 
   return (
     <Container>
@@ -39,7 +39,9 @@ export function Header() {
               />
             </ButtonCart>
 
-            {cart && cart.length > 0 && <Badge>{cart.length}</Badge>}
+            {totalProducts && totalProducts.quantityProducts > 0 && (
+              <Badge>{totalProducts.quantityProducts}</Badge>
+            )}
           </Cart>
         </GroupButtons>
       </Content>

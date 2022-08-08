@@ -3,19 +3,19 @@ import { useCart } from '../../hooks/useCart'
 import theme from '../../styles/theme'
 import { Button } from '../Button'
 import {
-  AmountToCart,
   Container,
   Div,
   Name,
   Options,
   Price,
   Product,
+  AmountToCart,
 } from './styles'
 
 interface ItemCartProps {
   id: number
   name: string
-  amount: number
+  quantity: number
   price: number
   thumbnailUrl: string
 }
@@ -23,27 +23,11 @@ interface ItemCartProps {
 export function ItemCart({
   id,
   name,
-  amount,
+  quantity,
   price,
   thumbnailUrl,
 }: ItemCartProps) {
-  const { addToCart, removeToCart } = useCart()
-
-  function handleUpdateAmount(type: 'add' | 'remove') {
-    if (type === 'remove') {
-      if (amount <= 0) return
-
-      addToCart({
-        id,
-        amount: amount - 1,
-      })
-    } else {
-      addToCart({
-        id,
-        amount: amount + 1,
-      })
-    }
-  }
+  const { decrement, increment, removeToCart } = useCart()
 
   function handleRemoveToCart() {
     removeToCart(id)
@@ -59,11 +43,11 @@ export function ItemCart({
 
           <Options>
             <AmountToCart>
-              <button onClick={() => handleUpdateAmount('remove')}>
+              <button onClick={() => decrement(id)}>
                 <Minus size={16} color={theme.colors.purple} weight="bold" />
               </button>
-              <div>{amount}</div>
-              <button onClick={() => handleUpdateAmount('add')}>
+              <div>{quantity}</div>
+              <button onClick={() => increment(id)}>
                 <Plus size={16} color={theme.colors.purple} weight="bold" />
               </button>
             </AmountToCart>
@@ -77,7 +61,7 @@ export function ItemCart({
       </Div>
 
       <Price>
-        {(price * amount).toLocaleString('pt-BR', {
+        {(price * quantity).toLocaleString('pt-BR', {
           minimumFractionDigits: 2,
           style: 'currency',
           currency: 'BRL',

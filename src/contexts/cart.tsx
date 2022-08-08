@@ -1,24 +1,31 @@
-import React, { createContext, useEffect, useState } from 'react'
-import { productsService } from '../services/products'
-
-type Cart = {
-  id: number
-  amount: number
-}
-
-interface Product {
+import React, { createContext, useEffect, useReducer, useState } from 'react'
+import {
+  addProductToCartAction,
+  decrementProductCartAction,
+  incrementProductCartAction,
+  removeProductToCartAction,
+} from '../reducers/cart/actions'
+import { cartReducers } from '../reducers/cart/reducer'
+export interface Product {
   id: number
   name: string
   thumbnailUrl: string
   price: number
-  amount: number
+  quantity: number
+}
+
+type TotalProducts = {
+  total: number
+  quantityProducts: number
 }
 
 export interface CartContextData {
-  cart: Cart[]
-  productsCart: Product[]
-  addToCart: (data: Cart) => void
+  cart: Product[]
+  totalProducts: TotalProducts
+  addToCart: (data: Product) => void
   removeToCart: (id: number) => void
+  increment: (id: number) => void
+  decrement: (id: number) => void
 }
 
 interface CartProviderProps {
@@ -28,73 +35,83 @@ interface CartProviderProps {
 export const CartContext = createContext({} as CartContextData)
 
 export function CartProvider({ children }: CartProviderProps) {
-  const [cart, setCart] = useState<Cart[]>([
+  const [cartState, dispatch] = useReducer(
+    cartReducers,
     {
-      id: 1,
-      amount: 3,
+      cart: [],
     },
-  ])
-  const [productsCart, setProductsCart] = useState<Product[]>([])
+    () => {
+      const storageStateAsJSON = localStorage.getItem(
+        '@coffee-delivery:cart-state-1.0.0',
+      )
 
-  useEffect(() => {
-    function mapperCart() {
-      const products = cart.map((item) => {
-        const product = productsService.find(
-          (findProduct) => findProduct.id === item.id,
-        )
-
-        return {
-          ...product,
-          amount: item.amount,
-        }
-      }) as Product[]
-
-      setProductsCart(products)
-    }
-
-    mapperCart()
-  }, [cart])
-
-  function addToCart(data: Cart) {
-    const findIndex = cart.find((findCart) => findCart.id === data.id)
-
-    if (!findIndex) {
-      setCart([...cart, data])
-    } else {
-      if (data.amount === 0) {
-        setCart((state) => state.filter((item) => item.id !== data.id))
+      if (storageStateAsJSON) {
+        return JSON.parse(storageStateAsJSON)
       }
 
-      setCart((state) =>
-        state.map((item) => {
-          if (item.id === data.id) {
-            return {
-              ...item,
-              amount: data.amount,
-            }
-          }
+      return {
+        cart: [],
+      }
+    },
+  )
 
-          return item
-        }),
-      )
-    }
+  const { cart } = cartState
+
+  const [totalProducts, setTotalProducts] = useState<TotalProducts>({
+    quantityProducts: 0,
+    total: 0,
+  })
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(cartState)
+
+    localStorage.setItem('@coffee-delivery:cart-state-1.0.0', stateJSON)
+  }, [cartState])
+
+  useEffect(() => {
+    const total = cart.reduce(
+      (acc, product) => {
+        const productSubtotal = product.price * product.quantity
+
+        return {
+          total: acc.total + productSubtotal,
+          quantityProducts: acc.quantityProducts + product.quantity,
+        }
+      },
+      {
+        quantityProducts: 0,
+        total: 0,
+      },
+    )
+
+    setTotalProducts(total)
+  }, [cart])
+
+  function addToCart(data: Product) {
+    dispatch(addProductToCartAction(data))
+  }
+
+  function increment(id: number) {
+    dispatch(incrementProductCartAction(id))
+  }
+
+  function decrement(id: number) {
+    dispatch(decrementProductCartAction(id))
   }
 
   function removeToCart(id: number) {
-    const findIndex = cart.find((findCart) => findCart.id === id)
-
-    if (findIndex) {
-      setCart((state) => state.filter((item) => item.id !== id))
-    }
+    dispatch(removeProductToCartAction(id))
   }
 
   return (
     <CartContext.Provider
       value={{
-        cart,
+        cart: cart || [],
         addToCart,
-        productsCart,
         removeToCart,
+        increment,
+        decrement,
+        totalProducts,
       }}
     >
       {children}

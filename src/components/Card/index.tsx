@@ -1,4 +1,4 @@
-import { Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { Minus, Plus, ShoppingCart, Trash } from 'phosphor-react'
 import { useState } from 'react'
 import { useCart } from '../../hooks/useCart'
 import theme from '../../styles/theme'
@@ -38,12 +38,12 @@ export function Card({
   price,
   thumbnailUrl,
 }: CardProps) {
-  const { addToCart, cart } = useCart()
+  const { addToCart, removeToCart, increment, decrement, cart } = useCart()
 
-  const amountInCart = cart && cart.find((item) => item.id === id)
+  const productInCart = cart && cart.find((item) => item.id === id)
 
   const [amount, setAmount] = useState(
-    (amountInCart && amountInCart.amount) || 1,
+    (productInCart && productInCart.quantity) || 1,
   )
 
   function handleUpdateAmount(type: 'add' | 'remove') {
@@ -51,16 +51,33 @@ export function Card({
       if (amount <= 0) return
 
       setAmount(amount - 1)
+
+      if (productInCart) {
+        decrement(id)
+      }
     } else {
       setAmount(amount + 1)
+
+      if (productInCart) {
+        increment(id)
+      }
     }
   }
 
   function handleAddToCart() {
     addToCart({
       id,
-      amount,
+      name,
+      price,
+      thumbnailUrl,
+      quantity: amount,
     })
+  }
+
+  function handleRemoveToCart() {
+    removeToCart(id)
+
+    setAmount(1)
   }
 
   return (
@@ -99,12 +116,18 @@ export function Card({
           </AmountToCart>
 
           <DivAddCart>
-            <Button size="small" onClick={handleAddToCart}>
-              <ShoppingCart size={24} weight="fill" />
-            </Button>
+            {productInCart ? (
+              <Button size="small" onClick={handleRemoveToCart}>
+                <Trash size={24} weight="fill" />
+              </Button>
+            ) : (
+              <Button size="small" onClick={handleAddToCart}>
+                <ShoppingCart size={24} weight="fill" />
+              </Button>
+            )}
 
-            {amountInCart && amountInCart.amount > 0 && (
-              <Badge>{amountInCart.amount}</Badge>
+            {productInCart && productInCart.quantity > 0 && (
+              <Badge>{productInCart.quantity}</Badge>
             )}
           </DivAddCart>
         </Cart>

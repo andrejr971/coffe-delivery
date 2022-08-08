@@ -21,6 +21,12 @@ export const Container = styled.div`
   & + div {
     margin-top: 2.4rem;
   }
+
+  @media screen and (max-width: 504px) {
+    flex-direction: column;
+    gap: 3.2rem;
+    align-items: flex-end;
+  }
 `
 
 export const Price = styled.strong`
@@ -72,6 +78,13 @@ export const Options = styled.div`
   display: flex;
   align-items: center;
   gap: 0.8rem;
+
+  width: 100%;
+
+  @media screen and (max-width: 504px) {
+    gap: 1.6rem;
+    align-items: center;
+  }
 `
 
 export const Name = styled.strong`
@@ -85,10 +98,27 @@ export const Product = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+
+  @media screen and (max-width: 504px) {
+    align-items: center;
+    width: 100%;
+
+    button:nth-child(2) {
+      flex: 1;
+    }
+  }
 `
 
 export const Div = styled.div`
   display: flex;
   align-items: center;
   gap: 2.4rem;
+
+  width: 100%;
+
+  @media screen and (max-width: 504px) {
+    flex-direction: column;
+    gap: 1.6rem;
+    align-items: center;
+  }
 `
