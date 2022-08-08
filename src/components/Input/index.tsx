@@ -1,4 +1,5 @@
 import { InputHTMLAttributes } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { Container } from './styles'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -7,10 +8,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   width?: string
 }
 
-export function Input({ optional = false, width, ...props }: InputProps) {
+export function Input({ optional = false, width, name, ...props }: InputProps) {
+  const { register } = useFormContext()
+
   return (
     <Container width={width}>
-      <input {...props} />
+      <input {...register(name)} {...props} />
       {optional && <span>Opcional</span>}
     </Container>
   )

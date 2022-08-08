@@ -2,10 +2,10 @@ import { darken } from 'polished'
 import styled, { css } from 'styled-components'
 
 interface SelectPaymentProps {
-  active?: true
+  active?: boolean
 }
 
-export const Form = styled.form`
+export const Form = styled.div`
   ${({ theme }) => css`
     width: 100%;
     padding: 3.2rem;

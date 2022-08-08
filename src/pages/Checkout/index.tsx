@@ -5,6 +5,11 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
+
+import { FormProvider, useForm } from 'react-hook-form'
+import * as zod from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+
 import { Button } from '../../components/Button'
 import { FormPayment } from '../../components/FormPayment'
 import { Input } from '../../components/Input'
@@ -23,17 +28,76 @@ import {
   ItemDetail,
   Total,
 } from './styles'
+import { useLocation } from '../../hooks/useLocation'
+import { useEffect, useState } from 'react'
+import { api } from '../../services/api'
+
+const formConfirmAddressValidationSchema = zod.object({
+  zipcode: zod.string().min(6, 'No mínimo 6 caracteres.'),
+  address: zod.string(),
+  number: zod.string(),
+  complement: zod.string().optional(),
+  district: zod.string(),
+  city: zod.string(),
+  state: zod.string(),
+})
+
+export type DeliveryAddressData = zod.infer<
+  typeof formConfirmAddressValidationSchema
+>
 
 export function Checkout() {
-  const { cart, totalProducts } = useCart()
+  const { cart, totalProducts, handleConfirmOrder } = useCart()
+  const { address, setAddress } = useLocation()
+
+  const deliveryAddressForm = useForm<DeliveryAddressData>({
+    resolver: zodResolver(formConfirmAddressValidationSchema),
+    defaultValues: {
+      address: address.logradouro,
+      city: address.localidade,
+      zipcode: address.cep,
+      district: address.bairro,
+      complement: address.complemento,
+      state: address.uf,
+    },
+  })
+
+  const { handleSubmit, reset, setValue, watch } = deliveryAddressForm
+
+  useEffect(() => {
+    if (address) {
+      setValue('address', address.logradouro)
+      setValue('city', address.localidade)
+      setValue('zipcode', address.cep)
+      setValue('district', address.bairro)
+      setValue('complement', address.complemento)
+      setValue('state', address.uf)
+    }
+  }, [address, setValue])
+
+  function handleConfirmAddress(data: DeliveryAddressData) {
+    handleConfirmOrder(data)
+  }
+
+  const zipcode = watch('zipcode')
+
+  useEffect(() => {
+    if (zipcode && zipcode.length > 7) {
+      api.get(`${zipcode}/json`).then(({ data }) => {
+        setAddress(data)
+      })
+    }
+  }, [zipcode, setAddress])
 
   return (
-    <Container>
+    <Container onSubmit={handleSubmit(handleConfirmAddress)}>
       <AddressAside>
         <div>
           <h2>Complete seu pedido</h2>
 
-          <FormPayment />
+          <FormProvider {...deliveryAddressForm}>
+            <FormPayment />
+          </FormProvider>
         </div>
       </AddressAside>
       <CartAside>

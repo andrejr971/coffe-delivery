@@ -5,8 +5,12 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
+import { useState } from 'react'
+import { useCart } from '../../hooks/useCart'
+
 import theme from '../../styles/theme'
 import { Input } from '../Input'
+
 import {
   Form,
   Group,
@@ -17,6 +21,17 @@ import {
 } from './styles'
 
 export function FormPayment() {
+  const [selectPayment, setSelectPayment] = useState<
+    'credit' | 'debit' | 'money'
+  >('credit')
+
+  const { setMethodPayment } = useCart()
+
+  function handleMethodPayment(payment: 'credit' | 'debit' | 'money') {
+    setSelectPayment(payment)
+    setMethodPayment(payment)
+  }
+
   return (
     <>
       <Form>
@@ -27,9 +42,8 @@ export function FormPayment() {
             <p>Informe o endereço onde deseja receber seu pedido</p>
           </div>
         </header>
-
         <GroupInputs>
-          <Input name="codezip" placeholder="CEP" width="20rem" />
+          <Input name="zipcode" placeholder="CEP" width="20rem" />
           <Input name="address" placeholder="Rua" />
 
           <Group>
@@ -57,17 +71,29 @@ export function FormPayment() {
         </header>
 
         <PaymentGroup>
-          <SelectPayment active>
+          <SelectPayment
+            active={selectPayment === 'credit'}
+            onClick={() => handleMethodPayment('credit')}
+            type="button"
+          >
             <CreditCard color={theme.colors.purple} size={16} />
             <span>Cartão de crédito</span>
           </SelectPayment>
 
-          <SelectPayment>
+          <SelectPayment
+            active={selectPayment === 'debit'}
+            onClick={() => handleMethodPayment('debit')}
+            type="button"
+          >
             <Bank color={theme.colors.purple} size={16} />
             <span>cartão de débito</span>
           </SelectPayment>
 
-          <SelectPayment>
+          <SelectPayment
+            active={selectPayment === 'money'}
+            onClick={() => handleMethodPayment('money')}
+            type="button"
+          >
             <Money color={theme.colors.purple} size={16} />
             <span>Dinheiro</span>
           </SelectPayment>

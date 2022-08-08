@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useReducer, useState } from 'react'
+import { DeliveryAddressData } from '../pages/Checkout'
 import {
   addProductToCartAction,
   decrementProductCartAction,
@@ -22,10 +23,13 @@ type TotalProducts = {
 export interface CartContextData {
   cart: Product[]
   totalProducts: TotalProducts
+  methodPayment: 'credit' | 'debit' | 'money'
   addToCart: (data: Product) => void
+  setMethodPayment: (method: 'credit' | 'debit' | 'money') => void
   removeToCart: (id: number) => void
   increment: (id: number) => void
   decrement: (id: number) => void
+  handleConfirmOrder: (data: DeliveryAddressData) => void
 }
 
 interface CartProviderProps {
@@ -54,6 +58,10 @@ export function CartProvider({ children }: CartProviderProps) {
       }
     },
   )
+
+  const [methodPayment, setMethodPayment] = useState<
+    'credit' | 'debit' | 'money'
+  >('credit')
 
   const { cart } = cartState
 
@@ -103,6 +111,10 @@ export function CartProvider({ children }: CartProviderProps) {
     dispatch(removeProductToCartAction(id))
   }
 
+  function handleConfirmOrder(data: DeliveryAddressData) {
+    console.log({ ...data, methodPayment })
+  }
+
   return (
     <CartContext.Provider
       value={{
@@ -112,6 +124,9 @@ export function CartProvider({ children }: CartProviderProps) {
         increment,
         decrement,
         totalProducts,
+        methodPayment,
+        setMethodPayment,
+        handleConfirmOrder,
       }}
     >
       {children}
