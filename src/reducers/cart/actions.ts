@@ -6,6 +6,7 @@ export enum ActionTypes {
   INCREMENT_PRODUCT = 'INCREMENT_PRODUCT',
   DECREMENT_PRODUCT = 'DECREMENT_PRODUCT',
   TOTAL_PRODUCTS_IN_CART = 'TOTAL_PRODUCTS_IN_CART',
+  CLEAR_CART = 'CLEAR_CART',
 }
 
 export function addProductToCartAction(product: Product) {
@@ -41,5 +42,11 @@ export function decrementProductCartAction(id: number) {
     payload: {
       id,
     },
+  }
+}
+
+export function clearCartAction() {
+  return {
+    type: ActionTypes.CLEAR_CART,
   }
 }

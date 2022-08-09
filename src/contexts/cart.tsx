@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useReducer, useState } from 'react'
 import { DeliveryAddressData } from '../pages/Checkout'
 import {
   addProductToCartAction,
+  clearCartAction,
   decrementProductCartAction,
   incrementProductCartAction,
   removeProductToCartAction,
@@ -20,10 +21,15 @@ type TotalProducts = {
   quantityProducts: number
 }
 
+interface ConfirmationOrderData extends DeliveryAddressData {
+  method: 'credit' | 'debit' | 'money'
+}
+
 export interface CartContextData {
   cart: Product[]
   totalProducts: TotalProducts
   methodPayment: 'credit' | 'debit' | 'money'
+  confirmationOrder: ConfirmationOrderData
   addToCart: (data: Product) => void
   setMethodPayment: (method: 'credit' | 'debit' | 'money') => void
   removeToCart: (id: number) => void
@@ -58,6 +64,9 @@ export function CartProvider({ children }: CartProviderProps) {
       }
     },
   )
+
+  const [confirmationOrder, setConfirmarOrder] =
+    useState<ConfirmationOrderData>({} as ConfirmationOrderData)
 
   const [methodPayment, setMethodPayment] = useState<
     'credit' | 'debit' | 'money'
@@ -111,8 +120,14 @@ export function CartProvider({ children }: CartProviderProps) {
     dispatch(removeProductToCartAction(id))
   }
 
+  function clearCart() {
+    dispatch(clearCartAction())
+  }
+
   function handleConfirmOrder(data: DeliveryAddressData) {
-    console.log({ ...data, methodPayment })
+    setConfirmarOrder({ ...data, method: methodPayment })
+
+    clearCart()
   }
 
   return (
@@ -127,6 +142,7 @@ export function CartProvider({ children }: CartProviderProps) {
         methodPayment,
         setMethodPayment,
         handleConfirmOrder,
+        confirmationOrder,
       }}
     >
       {children}

@@ -24,7 +24,7 @@ export const Container = styled.form`
 
   @media screen and (max-width: 1080px) {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 `
 
@@ -111,6 +111,22 @@ export const Total = styled.li`
     span,
     strong {
       font: ${theme.fonts.text_bold_l};
+    }
+  `}
+`
+
+export const Empty = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+
+  align-items: center;
+
+  width: 100%;
+
+  ${({ theme }) => css`
+    strong {
+      font: ${theme.fonts.title_m};
     }
   `}
 `

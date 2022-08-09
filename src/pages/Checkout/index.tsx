@@ -25,12 +25,14 @@ import {
   Container,
   Content,
   Details,
+  Empty,
   ItemDetail,
   Total,
 } from './styles'
 import { useLocation } from '../../hooks/useLocation'
 import { useEffect, useState } from 'react'
 import { api } from '../../services/api'
+import { useNavigate } from 'react-router-dom'
 
 const formConfirmAddressValidationSchema = zod.object({
   zipcode: zod.string().min(6, 'No mínimo 6 caracteres.'),
@@ -49,6 +51,8 @@ export type DeliveryAddressData = zod.infer<
 export function Checkout() {
   const { cart, totalProducts, handleConfirmOrder } = useCart()
   const { address, setAddress } = useLocation()
+
+  const navigation = useNavigate()
 
   const deliveryAddressForm = useForm<DeliveryAddressData>({
     resolver: zodResolver(formConfirmAddressValidationSchema),
@@ -77,6 +81,9 @@ export function Checkout() {
 
   function handleConfirmAddress(data: DeliveryAddressData) {
     handleConfirmOrder(data)
+
+    navigation('/success')
+    reset()
   }
 
   const zipcode = watch('zipcode')
@@ -105,44 +112,63 @@ export function Checkout() {
           <h2>Cafés selecionados</h2>
 
           <Content>
-            <CartList>
-              {cart && cart.map((item) => <ItemCart key={item.id} {...item} />)}
-            </CartList>
+            {cart && cart.length > 0 ? (
+              <>
+                <CartList>
+                  {cart.map((item) => (
+                    <ItemCart key={item.id} {...item} />
+                  ))}
+                </CartList>
 
-            <Details>
-              <ul>
-                <ItemDetail>
-                  <span>Total de itens</span>
-                  <strong>
-                    {totalProducts &&
-                      totalProducts.total.toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL',
-                        minimumFractionDigits: 2,
-                      })}
-                  </strong>
-                </ItemDetail>
-                <ItemDetail>
-                  <span>Entrega</span>
-                  <strong>R$ 3,50</strong>
-                </ItemDetail>
-                <Total>
-                  <span>Total</span>
-                  <strong>
-                    {totalProducts &&
-                      (totalProducts.total + 3.5).toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL',
-                        minimumFractionDigits: 2,
-                      })}
-                  </strong>
-                </Total>
-              </ul>
-            </Details>
+                <Details>
+                  <ul>
+                    <ItemDetail>
+                      <span>Total de itens</span>
+                      <strong>
+                        {totalProducts &&
+                          totalProducts.total.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                            minimumFractionDigits: 2,
+                          })}
+                      </strong>
+                    </ItemDetail>
+                    <ItemDetail>
+                      <span>Entrega</span>
+                      <strong>R$ 3,50</strong>
+                    </ItemDetail>
+                    <Total>
+                      <span>Total</span>
+                      <strong>
+                        {totalProducts &&
+                          (totalProducts.total + 3.5).toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                            minimumFractionDigits: 2,
+                          })}
+                      </strong>
+                    </Total>
+                  </ul>
+                </Details>
 
-            <Button size="full" variant="secondary">
-              Confirmar pedido
-            </Button>
+                <Button size="full" variant="secondary" type="submit">
+                  Confirmar pedido
+                </Button>
+              </>
+            ) : (
+              <Empty>
+                <strong>Carrinho vazio</strong>
+
+                <Button
+                  size="full"
+                  variant="secondary"
+                  type="button"
+                  onClick={() => navigation('/')}
+                >
+                  Adicionar itens ao carrinho
+                </Button>
+              </Empty>
+            )}
           </Content>
         </div>
       </CartAside>

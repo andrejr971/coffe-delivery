@@ -8,7 +8,7 @@ export interface CartState {
 
 interface Action {
   type: keyof typeof ActionTypes
-  payload: any
+  payload?: any
 }
 
 export function cartReducers(state: CartState, action: Action) {
@@ -52,6 +52,12 @@ export function cartReducers(state: CartState, action: Action) {
           draft.cart[productIndex].quantity - 1
       })
     }
+
+    case ActionTypes.CLEAR_CART:
+      return produce(state, (draft) => {
+        draft.cart = []
+      })
+
     default:
       return state
   }

@@ -53,6 +53,12 @@ export const ButtonLocation = styled.button`
     &:hover {
       background: ${darken(0.1, theme.colors.purple_light)};
     }
+
+    @media screen and (max-width: 640px) {
+      span {
+        display: none;
+      }
+    }
   `}
 `
 
