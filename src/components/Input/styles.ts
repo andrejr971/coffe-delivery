@@ -11,7 +11,6 @@ export const Container = styled.div<ContainerProps>`
 
     background: ${theme.colors.base_input};
     font: ${theme.fonts.text_regular_s};
-    color: ${theme.colors.base_text};
 
     padding: 1.2rem;
     border: 1px solid ${theme.colors.base_button};
@@ -20,6 +19,7 @@ export const Container = styled.div<ContainerProps>`
     width: ${width || '100%'};
 
     input {
+      color: ${theme.colors.base_text};
       flex: 1;
       background: transparent;
       border: 0;

@@ -30,6 +30,11 @@ Nesse desafio, foi proposto desenvolver uma aplicação para gerenciar um carrin
 - Exibir o total de itens no carrinho no Header
 - Exibir o valor total da soma de itens no carrinho multiplicados pelo valor
 
+Adicionais:
+
+- Tema dark
+- Pesquisa cep
+
 ## :rocket: Tecnologias
 
 Este projeto foi desenvolvido com as seguintes tecnologias:
@@ -82,6 +87,8 @@ http://localhost:3000
     <img width="600" style="border-radius: 10px" height="auto" alt="Class-02" title="Class-02" src=".github/home-location.png" />
     <img width="600" style="border-radius: 10px" height="auto" alt="Class-01" title="Class-01" src=".github/cart.png" />
     <img width="600" style="border-radius: 10px" height="auto" alt="Class-02" title="Class-02" src=".github/success.png" />
+    <img width="600" style="border-radius: 10px" height="auto" alt="Home" title="Home" src=".github/home-dark.png" />
+    <img width="600" style="border-radius: 10px" height="auto" alt="Class-02" title="Class-02" src=".github/cart-dark.png" />
 </h1>
 <br />
 

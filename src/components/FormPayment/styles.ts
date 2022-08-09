@@ -96,6 +96,7 @@ export const SelectPayment = styled.button<SelectPaymentProps>`
     css`
       background: ${theme.colors.purple_light};
       border-color: ${theme.colors.purple};
+      color: ${theme.title === 'dark' && theme.colors.base_button};
 
       &:hover {
         background: ${darken(0.1, theme.colors.purple_light)};

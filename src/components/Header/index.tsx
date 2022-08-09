@@ -1,12 +1,15 @@
-import { MapPin, ShoppingCart } from 'phosphor-react'
 import { useEffect, useState } from 'react'
+import { MapPin, Moon, ShoppingCart, Sun } from 'phosphor-react'
+import { useTheme as useThemeProvider } from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import LogoImg from '../../assets/Logo.svg'
 import { LocationData } from '../../contexts/location'
 import { useCart } from '../../hooks/useCart'
 import { useLocation } from '../../hooks/useLocation'
-import theme from '../../styles/theme'
+import { useTheme } from '../../hooks/useTheme'
 import { ModalLocation } from '../ModalLocation'
+
+import LogoImgDark from '../../assets/Logo.svg'
+import LogoImgLight from '../../assets/Logo-light.svg'
 
 import {
   Badge,
@@ -20,6 +23,9 @@ import {
 
 export function Header() {
   const { totalProducts } = useCart()
+  const { handleTheme, theme } = useTheme()
+
+  const { title } = useThemeProvider()
 
   const [isVisible, setIsVisible] = useState(false)
 
@@ -60,10 +66,20 @@ export function Header() {
       <Container>
         <Content>
           <NavLink to="/">
-            <img src={LogoImg} alt="Logo Coffee Delivery" />
+            <img
+              src={title === 'dark' ? LogoImgLight : LogoImgDark}
+              alt="Logo Coffee Delivery"
+            />
           </NavLink>
 
           <GroupButtons>
+            <ButtonLocation onClick={handleTheme}>
+              {title === 'dark' ? (
+                <Sun weight="fill" size={24} />
+              ) : (
+                <Moon weight="fill" size={24} />
+              )}
+            </ButtonLocation>
             <ButtonLocation onClick={handleOpenModal}>
               <MapPin color={theme.colors.purple} weight="fill" size={24} />
               <span>{location || '---'}</span>
